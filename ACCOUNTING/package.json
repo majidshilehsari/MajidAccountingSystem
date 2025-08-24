@@ -1,0 +1,17 @@
+{
+  "name": "accounting-book",
+  "version": "1.0.0",
+  "description": "دفتر حسابداری ساده با Node.js, Express, SQLite, HTML, CSS, JS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6"
+  }
+}
+
+
+
+

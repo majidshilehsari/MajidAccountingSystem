@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دفتر حسابداری</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>دفتر حسابداری</h1>
+        <div id="tabs">
+            <button id="tab-persons" class="active">ثبت افراد</button>
+            <button id="tab-records">ثبت رکوردها</button>
+            <button id="tab-settings">تنظیمات</button>
+        </div>
+        <div id="person-section">
+            <h2>ثبت افراد</h2>
+            <input type="text" id="person-name" placeholder="نام فرد جدید">
+            <label for="person-date">تاریخ ثبت (شمسی):</label>
+            <input type="text" id="person-date" placeholder="YYYY-MM-DD" inputmode="numeric" pattern="^\\d{4}-\\d{2}-\\d{2}$" title="قالب تاریخ: YYYY-MM-DD">
+            <button id="add-person">افزودن فرد</button>
+            <div id="person-report">
+                <h3>گزارش افراد</h3>
+                <table id="person-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>تاریخ ثبت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="person-list"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="records-section" style="display:none;">
+            <h2>ثبت رکوردها</h2>
+            <div>
+                <label for="person-select">انتخاب فرد:</label>
+                <select id="person-select"></select>
+            </div>
+            <form id="record-form">
+                <input type="text" id="record-desc" placeholder="شرح">
+                <input type="number" id="record-amount" placeholder="مبلغ">
+                <label for="record-date" class="visually-hidden">تاریخ ثبت (شمسی)</label>
+                <input type="text" id="record-date" placeholder="YYYY-MM-DD" inputmode="numeric" pattern="^\\d{4}-\\d{2}-\\d{2}$" title="قالب تاریخ: YYYY-MM-DD">
+                <button type="submit">ثبت رکورد</button>
+            </form>
+            <div id="record-report">
+                <h3>گزارش رکوردها</h3>
+                <table id="record-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>شرح</th>
+                            <th>مبلغ</th>
+                            <th>تاریخ ثبت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="record-list"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="settings-section" style="display:none;">
+            <h2>تنظیمات</h2>
+            <p>در نسخه بعدی، تنظیمات بیشتر اضافه خواهد شد.</p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
