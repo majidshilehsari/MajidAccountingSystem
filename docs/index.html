@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دفتر حسابداری</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/vazirmatn@33.003.0/font-face.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>دفتر حسابداری</h1>
+        <div id="tabs">
+            <button id="tab-persons" class="active">ثبت افراد</button>
+            <button id="tab-records">ثبت رکوردها</button>
+            <button id="tab-settings">تنظیمات</button>
+        </div>
+        <div id="person-section">
+            <h2>ثبت افراد</h2>
+            <input type="text" id="person-name" placeholder="نام فرد جدید">
+            <input type="date" id="person-date" placeholder="تاریخ ثبت">
+            <button id="add-person">افزودن فرد</button>
+            <div id="person-report">
+                <h3>گزارش افراد</h3>
+                <ul id="person-list"></ul>
+            </div>
+        </div>
+        <div id="records-section" style="display:none;">
+            <h2>ثبت رکوردها</h2>
+            <div>
+                <label for="person-select">انتخاب فرد:</label>
+                <select id="person-select"></select>
+            </div>
+            <form id="record-form">
+                <input type="text" id="record-desc" placeholder="شرح">
+                <input type="number" id="record-amount" placeholder="مبلغ">
+                <input type="date" id="record-date" placeholder="تاریخ ثبت">
+                <button type="submit">ثبت رکورد</button>
+            </form>
+            <div id="record-report">
+                <h3>گزارش رکوردها</h3>
+                <ul id="record-list"></ul>
+            </div>
+        </div>
+        <div id="settings-section" style="display:none;">
+            <h2>تنظیمات</h2>
+            <p>در نسخه بعدی، تنظیمات بیشتر اضافه خواهد شد.</p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
