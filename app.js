@@ -19,23 +19,37 @@ const recordForm = document.getElementById('record-form');
 const recordDescInput = document.getElementById('record-desc');
 const recordAmountInput = document.getElementById('record-amount');
 const recordList = document.getElementById('record-list');
+const personDateInput = document.getElementById('person-date');
+const recordDateInput = document.getElementById('record-date');
 
 function showTab(tab) {
     if (tab === 'persons') {
         tabPersons.classList.add('active');
         tabRecords.classList.remove('active');
+        document.getElementById('tab-settings') && document.getElementById('tab-settings').classList.remove('active');
         personSection.style.display = 'block';
         recordsSection.style.display = 'none';
-    } else {
+        document.getElementById('settings-section') && (document.getElementById('settings-section').style.display = 'none');
+    } else if (tab === 'records') {
         tabPersons.classList.remove('active');
         tabRecords.classList.add('active');
+        document.getElementById('tab-settings') && document.getElementById('tab-settings').classList.remove('active');
         personSection.style.display = 'none';
         recordsSection.style.display = 'block';
+        document.getElementById('settings-section') && (document.getElementById('settings-section').style.display = 'none');
+    } else if (tab === 'settings') {
+        tabPersons.classList.remove('active');
+        tabRecords.classList.remove('active');
+        document.getElementById('tab-settings') && document.getElementById('tab-settings').classList.add('active');
+        personSection.style.display = 'none';
+        recordsSection.style.display = 'none';
+        document.getElementById('settings-section') && (document.getElementById('settings-section').style.display = 'block');
     }
 }
 
 tabPersons && tabPersons.addEventListener('click', () => showTab('persons'));
 tabRecords && tabRecords.addEventListener('click', () => showTab('records'));
+document.getElementById('tab-settings') && document.getElementById('tab-settings').addEventListener('click', () => showTab('settings'));
 
 async function fetchPersons() {
     const { data, error } = await supabase
@@ -54,7 +68,8 @@ function renderPersons() {
     personList.innerHTML = '';
     persons.forEach(person => {
         const li = document.createElement('li');
-        li.textContent = person.name;
+        const dateText = person.created_at ? new Date(person.created_at).toLocaleDateString('fa-IR') : '';
+        li.textContent = dateText ? `${person.name} (${dateText})` : person.name;
         const delBtn = document.createElement('button');
         delBtn.textContent = 'حذف';
         delBtn.onclick = () => {
@@ -81,12 +96,17 @@ async function addPerson() {
         personNameInput.focus();
         return;
     }
-    const { error } = await supabase.from('persons').insert([{ name }]);
+    const created_at = personDateInput && personDateInput.value ? new Date(personDateInput.value).toISOString() : new Date().toISOString();
+    let { error } = await supabase.from('persons').insert([{ name, created_at }]);
+    if (error && error.message && error.message.includes('created_at')) {
+        ({ error } = await supabase.from('persons').insert([{ name }]));
+    }
     if (error) {
         alert('خطا در افزودن فرد: ' + error.message);
         return;
     }
     personNameInput.value = '';
+    if (personDateInput) personDateInput.value = '';
     fetchPersons();
     personNameInput.focus();
 }
@@ -131,7 +151,8 @@ function renderRecords() {
     }
     records.forEach(record => {
         const li = document.createElement('li');
-        li.textContent = `${record.desc} - ${record.amount} تومان`;
+        const dateText = record.created_at ? new Date(record.created_at).toLocaleDateString('fa-IR') : '';
+        li.textContent = dateText ? `${record.desc} - ${record.amount} تومان (${dateText})` : `${record.desc} - ${record.amount} تومان`;
         const actions = document.createElement('span');
         actions.className = 'actions';
         const delBtn = document.createElement('button');
@@ -157,13 +178,18 @@ async function addRecord(e) {
         alert('همه فیلدها را کامل کنید.');
         return;
     }
-    const { error } = await supabase.from('records').insert([{ person_id: personId, desc, amount }]);
+    const created_at = recordDateInput && recordDateInput.value ? new Date(recordDateInput.value).toISOString() : new Date().toISOString();
+    let { error } = await supabase.from('records').insert([{ person_id: personId, desc, amount, created_at }]);
+    if (error && error.message && error.message.includes('created_at')) {
+        ({ error } = await supabase.from('records').insert([{ person_id: personId, desc, amount }]));
+    }
     if (error) {
         alert('خطا در افزودن رکورد: ' + error.message);
         return;
     }
     recordDescInput.value = '';
     recordAmountInput.value = '';
+    if (recordDateInput) recordDateInput.value = '';
     fetchRecords();
 }
 
